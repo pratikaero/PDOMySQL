@@ -1,4 +1,2 @@
-PHP-PDO-MySQL-Class
+Coming Soon
 ===================
-
-PHP simplified class for mysql database which internaly use PDO.
