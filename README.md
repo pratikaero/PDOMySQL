@@ -79,3 +79,22 @@ $db->where(array(
                 "OR")
         ));
 ```
+
+#### UPDATE
+This method accepts two arguments, first table name and second array of columns fields to be updated.
+
+```php
+# Produces UPDATE table SET col1= "val1",col2= "val2"
+$db->update("table",array("col1"=>"val1","col2"=>"val2"));
+
+# Produces UPDATE table SET col1= "val1",col2= "val2" WHERE c1="v1" AND c2="v2"
+$db->where(array("c1"=>"v1","c2"=>"v2"))->update("table",array("col1"=>"val1","col2"=>"val2"));
+```
+
+#### INSERT
+This method accepts two arguments, first table name and second array of value to insert.
+
+```php
+# Produces INSERT INTO table (col1,col2) VALUES("val1","val2")
+$db->insert("table",array("col1"=>"val1","col2"=>"val2"));
+```
