@@ -483,6 +483,7 @@ class PDOMySQL
     }
 
     /**
+     * Constructs IN clause.
      * 
      * @param   string          $field
      * @param   array|string    $array
@@ -500,6 +501,13 @@ class PDOMySQL
         return $this;
     }
 
+    /**
+     * Constructs NOT IN clause.
+     * 
+     * @param   string      $field
+     * @param   array       $array
+     * @return  PDOMySQL
+     */
     public function where_not_in($field, $array)
     {
         if (is_array($array))
