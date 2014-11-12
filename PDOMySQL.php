@@ -144,7 +144,7 @@ class PDOMySQL
     {
         $this->queries[] = $this->last_query;
         $this->reset();
-        $statement       = $this->conn->prepare($query);
+        $statement = $this->conn->prepare($query);
 
         try
         {
@@ -160,7 +160,7 @@ class PDOMySQL
             echo $ex->getMessage();
         }
 
-        $this->cfg_bind  = array();
+        $this->cfg_bind = array();
         $this->insert_id = $this->conn->lastInsertId();
 
         if (preg_match('#^(INSERT|UPDATE|DELETE)(.*)#i', $query))
@@ -294,7 +294,7 @@ class PDOMySQL
         $record = array();
         foreach ($data as $key => $value)
         {
-            $record[$key]         = ':' . $key;
+            $record[$key] = ':' . $key;
             $this->cfg_bind[$key] = $value;
         }
 
@@ -395,11 +395,11 @@ class PDOMySQL
      */
     private function reset()
     {
-        $this->cfg_select     = '*';
-        $this->cfg_from       = '';
-        $this->cfg_limit      = NULL;
-        $this->cfg_where      = array();
-        $this->cfg_join       = array();
+        $this->cfg_select = '*';
+        $this->cfg_from = '';
+        $this->cfg_limit = NULL;
+        $this->cfg_where = array();
+        $this->cfg_join = array();
         $this->cfg_bind_count = 1;
     }
 
@@ -446,7 +446,7 @@ class PDOMySQL
         $update = array();
         foreach ($data as $key => $value)
         {
-            $update[]             = $key . '= :' . $key;
+            $update[] = $key . '= :' . $key;
             $this->cfg_bind[$key] = $value;
         }
 
