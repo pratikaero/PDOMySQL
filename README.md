@@ -1,7 +1,7 @@
 PDOMySQL
 ===================
 
-This is very simplified PHP PDO class for mysql database which we can use to manipulate records in tables. If you don't have database query knowledge, you can ues this class. This class also usefull for database experts too.
+Simplified PHP PDO class for mysql database to manipulate records in tables. If you don't have database query knowledge, you can ues this class. This class also usefull for database experts too.
 
 Let's look at how to use.
 
