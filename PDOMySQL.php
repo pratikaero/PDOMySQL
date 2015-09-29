@@ -118,18 +118,22 @@ class PDOMySQL
      * Requires where method to call before this method in order to 
      * apply where condition on delete query.
      * 
-     * @param type $table
-     * @return type
+     * @param   string      $table
+     * @return  int
+     * @throws  Exception
      */
     public function delete($table)
     {
         $query = 'DELETE FROM ' . $table;
 
-        if (count($this->cfg_where) > 0)
+        if (count($this->cfg_where) === 0)
         {
-            $this->factorizeWhere();
-            $query .= ' WHERE ' . implode(' AND ', $this->cfg_where) . PHP_EOL;
+            throw new Exception("DELETE operation is not safe. You must use where clause.");
         }
+
+
+        $this->factorizeWhere();
+        $query .= ' WHERE ' . implode(' AND ', $this->cfg_where) . PHP_EOL;
 
         $this->last_query = $query;
         return $this->execute($query);
@@ -284,8 +288,9 @@ class PDOMySQL
     /**
      * Insets records into given table.
      * 
-     * @param type $table
-     * @param type $data
+     * @param   string      $table
+     * @param   array       $data
+     * @return  int
      */
     public function insert($table, $data)
     {
@@ -321,7 +326,7 @@ class PDOMySQL
      * Sets limits on record to fetch.
      * 
      * @param   int|array       $limit
-     * @return  PDOMySQL
+     * @return  \PDOMySQL
      */
     public function limit($limit)
     {
@@ -407,7 +412,7 @@ class PDOMySQL
      * Sets fields to fetch for select query.
      * 
      * @param   string|array    $field
-     * @return  PDOMySQL
+     * @return  \PDOMySQL
      */
     public function select($field = "*")
     {
@@ -424,6 +429,21 @@ class PDOMySQL
     }
 
     /**
+     * Returns Select Query.
+     * 
+     * @return array
+     */
+    public function getQuery()
+    {
+        $bind = $this->cfg_bind;
+        $bind_count = $this->cfg_bind_count;
+        $this->reset();
+        $this->cfg_bind = $bind;
+        $this->cfg_bind_count = $bind_count;
+        return $this->prepareSelect();
+    }
+
+    /**
      * Sets wheather to show query on error.
      * 
      * @param   boolean     $flag
@@ -436,8 +456,9 @@ class PDOMySQL
     /**
      * Update fields provided in given table.
      * 
-     * @param type $table
-     * @param type $data
+     * @param   string          $table
+     * @param   array           $data
+     * @return  int
      */
     public function update($table, $data)
     {
@@ -467,6 +488,7 @@ class PDOMySQL
      * 
      * @param   string|array    $field
      * @param   string          $value
+     * @return \PDOMySQL
      */
     public function where($field, $value = NULL)
     {
@@ -487,7 +509,7 @@ class PDOMySQL
      * 
      * @param   string          $field
      * @param   array|string    $array
-     * @return  PDOMySQL
+     * @return  \PDOMySQL
      */
     public function where_in($field, $array)
     {
@@ -506,7 +528,7 @@ class PDOMySQL
      * 
      * @param   string      $field
      * @param   array       $array
-     * @return  PDOMySQL
+     * @return  \PDOMySQL
      */
     public function where_not_in($field, $array)
     {
@@ -518,6 +540,30 @@ class PDOMySQL
         $this->cfg_where = $field . ' NOT IN(' . $array . ')';
 
         return $this;
+    }
+
+    /**
+     * Starts transaction.
+     */
+    public function startTransaction()
+    {
+        $this->conn->beginTransaction();
+    }
+
+    /**
+     * RollBack Transaction.
+     */
+    public function rollBack()
+    {
+        $this->conn->rollBack();
+    }
+
+    /**
+     * Commit Transaction.
+     */
+    public function commit()
+    {
+        $this->conn->commit();
     }
 
 }
