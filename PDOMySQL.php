@@ -95,6 +95,13 @@ class PDOMySQL
     private $query_show = TRUE;
 
     /**
+     * Flag for enabling or disabling query log.
+     * 
+     * @var boolean 
+     */
+    private $query_log = FALSE;
+
+    /**
      * Construct method.
      * 
      * @param   string    $dsn
@@ -142,11 +149,15 @@ class PDOMySQL
     /**
      * Executes query.
      * 
-     * @param   string  $query
+     * @param   string      $query
      */
     private function execute($query)
     {
-        $this->queries[] = $this->last_query;
+        if ($this->query_log)
+        {
+            $this->queries[] = $this->last_query;
+        }
+
         $this->reset();
         $statement = $this->conn->prepare($query);
 
@@ -272,7 +283,7 @@ class PDOMySQL
     public function getOne()
     {
         $this->limit(1)->prepareSelect();
-        return $this->execute($this->last_query);
+        return current($this->execute($this->last_query));
     }
 
     /**
@@ -540,6 +551,16 @@ class PDOMySQL
         $this->cfg_where = $field . ' NOT IN(' . $array . ')';
 
         return $this;
+    }
+
+    /**
+     * Enable or disable query log.
+     * 
+     * @param   boolean   $flag
+     */
+    public function setQueryLog($flag)
+    {
+        $this->query_log = (bool) $flag;
     }
 
     /**
