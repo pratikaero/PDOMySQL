@@ -151,7 +151,7 @@ class PDOMySQL
      * 
      * @param   string      $query
      */
-    private function execute($query)
+    private function execute($query,$fetch=PDO::FETCH_OBJ)
     {
         if ($this->query_log)
         {
@@ -184,7 +184,7 @@ class PDOMySQL
         }
         else
         {
-            return $statement->fetchAll(PDO::FETCH_OBJ);
+            return $statement->fetchAll($fetch);
         }
     }
 
@@ -220,10 +220,10 @@ class PDOMySQL
      * 
      * @return array|boolean
      */
-    public function get()
+    public function get($fetch=PDO::FETCH_OBJ)
     {
         $this->prepareSelect();
-        return $this->execute($this->last_query);
+        return $this->execute($this->last_query,$fetch);
     }
 
     /**
